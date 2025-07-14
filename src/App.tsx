@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Spinner from './Spinner';
 
 function App() {
   const [formData, setFormData] = useState({
@@ -11,14 +12,18 @@ function App() {
   const [response, setResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     setError(null);
     setResponse(null);
+ 
     try {
       const res = await fetch('http://redpoint-env.eba-waypeqif.us-east-1.elasticbeanstalk.com/rank', {
         method: 'POST',
@@ -35,6 +40,8 @@ function App() {
     } catch (err: any) {
       console.error(err);
       setError('Something went wrong while calling the API.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,12 +59,12 @@ function App() {
               name={field}
               value={(formData as any)[field]}
               onChange={handleChange}
-              style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4, fontSize: '16px' }}
+              style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4, fontSize: '16px', backgroundColor: 'white', }}
             />
           </div>
         ))}
-        <button type="submit" style={{ padding: 10, backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: 4 }}>
-          Submit
+        <button type="submit" style={{ padding: 10, backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: 4}}>
+           {loading ? 'Loading...' : 'Submit'}
         </button>
       </form>
 
@@ -67,7 +74,7 @@ function App() {
         </div>
       )}
 
-      {response && (
+      {loading ? <Spinner /> : response && (
         <div style={{ marginTop: 30, padding: 20, border: '1px solid #ddd', borderRadius: 8, backgroundColor: '#f9f9f9' }}>
           <h3>📊 Rank Analysis</h3>
           <p><strong>Rank:</strong> {response.rank}</p>
