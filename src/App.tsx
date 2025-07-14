@@ -52,7 +52,7 @@ function App() {
               name={field}
               value={(formData as any)[field]}
               onChange={handleChange}
-              style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+              style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4, fontSize: '16px' }}
             />
           </div>
         ))}
