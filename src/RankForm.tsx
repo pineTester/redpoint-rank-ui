@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Spinner from './Spinner';
 
-function App() {
+function RankForm() {
   const [formData, setFormData] = useState({
     age: '',
     height: '',
@@ -86,4 +86,4 @@ function App() {
   );
 }
 
-export default App;
+export default RankForm;

@@ -1,0 +1,12 @@
+header {
+    width: 100%;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    border: 2px solid #e5e7eb; /* Tailwind's default border color */
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb; /* Tailwind's default border color */
+}
