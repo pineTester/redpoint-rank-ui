@@ -1,32 +1,27 @@
 import { useState } from 'react';
-import Spinner from './Spinner';
+import { useNavigate } from 'react-router-dom';
 
-export const RankForm = () => {
+export const CodeRequestForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    age: '',
-    height: '',
-    weight: '',
-    redpoint: '',
+    phone: '',
   });
-
-  const [response, setResponse] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [response, setResponse] = useState(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setLoading(true);
     e.preventDefault();
-    setError(null);
-    setResponse(null);
+    setLoading(true);
+    setError('');
 
     try {
       const res = await fetch(
-        'http://redpoint-env.eba-waypeqif.us-east-1.elasticbeanstalk.com/rank',
+        'http://auth-env.eba-3ysgkqwg.us-east-1.elasticbeanstalk.com/auth/request-code',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -45,6 +40,7 @@ export const RankForm = () => {
       setError('Something went wrong while calling the API.');
     } finally {
       setLoading(false);
+      navigate(`/code-verification?phone=${formData.phone}`);
     }
   };
 
@@ -57,14 +53,9 @@ export const RankForm = () => {
         fontFamily: 'sans-serif',
       }}
     >
-      <h1>🧗 Redpoint Rank</h1>
+      <h1>Get Code</h1>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 12 }}>
-        {[
-          'age (years)',
-          'height (inches)',
-          'weight (lbs)',
-          'redpoint (v?)',
-        ].map((field) => (
+        {['phone'].map((field) => (
           <div key={field}>
             <label
               style={{ display: 'block', marginBottom: 4, fontWeight: 'bold' }}
@@ -97,42 +88,11 @@ export const RankForm = () => {
             borderRadius: 4,
           }}
         >
-          {loading ? 'Loading...' : 'Submit'}
+          {loading ? 'Sending Code...' : 'Get Code'}
         </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {response && <p style={{ color: 'green' }}>Success!</p>}
       </form>
-
-      {error && (
-        <div style={{ marginTop: 20, color: 'red' }}>
-          <strong>{error}</strong>
-        </div>
-      )}
-
-      {loading ? (
-        <Spinner />
-      ) : (
-        response && (
-          <div
-            style={{
-              marginTop: 30,
-              padding: 20,
-              border: '1px solid #ddd',
-              borderRadius: 8,
-              backgroundColor: '#f9f9f9',
-            }}
-          >
-            <h3>📊 Rank Analysis</h3>
-            <p>
-              <strong>Rank:</strong> {response.rank}
-            </p>
-            <p>
-              <strong>Score:</strong> {response.score}
-            </p>
-            <p>
-              <strong>Analysis:</strong> {response.analysis}
-            </p>
-          </div>
-        )
-      )}
     </div>
   );
 };

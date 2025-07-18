@@ -42,7 +42,7 @@ export const LandingPage = () => {
             }}>Climbing Rank</span>
         </h1>
         <a
-          href="/rank"
+          href="/signup"
           style={{
             display: 'inline-block',
             backgroundColor: '#f00',
