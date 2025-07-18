@@ -44,14 +44,14 @@ export const SignupForm = () => {
       const data = await res.json();
       localStorage.setItem('token', data.token);
       setResponse(data);
+
+      localStorage.removeItem('codeToken');
+      navigate(`/rank`);
     } catch (err: any) {
       console.error(err);
       setError('Something went wrong while calling the API.');
     } finally {
-      localStorage.removeItem('codeToken');
-
       setLoading(false);
-      navigate(`/rank`);
     }
   };
 

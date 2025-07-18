@@ -35,12 +35,13 @@ export const CodeRequestForm = () => {
 
       const data = await res.json();
       setResponse(data);
+
+      navigate(`/code-verification?phone=${formData.phone}`);
     } catch (err: any) {
       console.error(err);
       setError('Something went wrong while calling the API.');
     } finally {
       setLoading(false);
-      navigate(`/code-verification?phone=${formData.phone}`);
     }
   };
 

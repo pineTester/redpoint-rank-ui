@@ -44,12 +44,13 @@ export const CodeVerificationForm = () => {
       const data = await res.json();
       localStorage.setItem('codeToken', data.token);
       setResponse(data);
+
+      navigate('/signup');
     } catch (err: any) {
       console.error(err);
       setError('Something went wrong while calling the API.');
     } finally {
       setLoading(false);
-      navigate('/signup');
     }
   };
 
